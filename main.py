@@ -6,6 +6,11 @@ import os
 from dotenv import load_dotenv
 import re
 
+# Check for .env
+if not os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(__file__)), '.env')):
+    print('No .env file found...\nExiting...')
+    sys.exit(1)
+
 # Load enviromental variables
 load_dotenv()
 TOKENKEY = os.getenv('TOKENKEY')
