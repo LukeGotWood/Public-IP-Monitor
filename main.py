@@ -1,7 +1,7 @@
 # main.py
 
 # Import all used modules
-import http.client, urllib, urllib.request
+import http.client, urllib, urllib.request, socket
 import os, sys, time
 from dotenv import load_dotenv
 import re
