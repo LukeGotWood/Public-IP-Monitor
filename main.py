@@ -20,6 +20,7 @@ NETWORKWAIT = int(os.getenv('NETWORKWAIT'))
 # Declare variables
 old_ip = 'NA.NA.NA.NA'
 ip = ''
+ip_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ip.txt')
 
 # Declare functions
 def pushNotification(msg):
@@ -59,9 +60,9 @@ while not is_network():
     time.sleep(NETWORKWAIT)
 
 # Check if ip file exists and retrieve ip
-if os.path.isfile('ip.txt'):
+if os.path.isfile(ip_file):
     print('File exist')
-    with open('ip.txt', 'r') as f:
+    with open(ip_file, 'r') as f:
         old_ip = f.read()
 else:
     print('File not exist')
@@ -81,7 +82,7 @@ print(f'New ip \'{new_ip}\'')
 if old_ip != new_ip:
     print(f'Current ip \'{old_ip}\' does not match new ip \'{new_ip}\'')
     pushNotification(f'Ip Address has changed from \'{old_ip}\' to \'{new_ip}\'')
-    with open('ip.txt', 'w') as f:
+    with open(ip_file, 'w') as f:
         f.write(new_ip)
 else:
     print(f'Current ip \'{old_ip}\' matched new ip \'{new_ip}\'')
