@@ -2,7 +2,7 @@
 
 # Import all used modules
 import http.client, urllib, urllib.request
-import os
+import os, sys, time
 from dotenv import load_dotenv
 import re
 
@@ -86,5 +86,9 @@ if old_ip != new_ip:
         f.write(new_ip)
 else:
     print(f'Current ip \'{old_ip}\' matched new ip \'{new_ip}\'')
+
+print('DONE')
+
+sys.exit(0)
 
 # -------- END Main Body --------
