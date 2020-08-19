@@ -15,6 +15,7 @@ if not os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(__file__)), 
 load_dotenv()
 TOKENKEY = os.getenv('TOKENKEY')
 USERKEY = os.getenv('USERKEY')
+NETWORKWAIT = int(os.getenv('NETWORKWAIT'))
 
 # Declare variables
 old_ip = 'NA.NA.NA.NA'
@@ -23,15 +24,39 @@ ip = ''
 # Declare functions
 def pushNotification(msg):
     conn = http.client.HTTPSConnection('api.pushover.net:443')
-    conn.request('POST', '/1/messages.json',
-    urllib.parse.urlencode({
-        'token': TOKENKEY,
-        'user': USERKEY,
-        'message': msg,
-    }), { 'Content-type': 'application/x-www-form-urlencoded' })
+    conn.request(
+        'POST',
+        '/1/messages.json',
+        urllib.parse.urlencode({
+            'token': TOKENKEY,
+            'user': USERKEY,
+            'message': msg
+        }),
+        { 'Content-type': 'application/x-www-form-urlencoded' }
+    )
     conn.getresponse()
 
+def is_network():
+    hostname = "one.one.one.one"
+    try:
+        # see if we can resolve the host name -- tells us if there is
+        # a DNS listening
+        host = socket.gethostbyname(hostname)
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        s = socket.create_connection((host, 80), 2)
+        s.close()
+        return True
+    except:
+        pass
+        return False
+
 # -------- Main Body --------
+
+# Wait until network connection is established before continuing
+while not is_network():
+    print(f'No network detected, waiting for { NETWORKWAIT } seconds...')
+    time.sleep(NETWORKWAIT)
 
 # Check if ip file exists and retrieve ip
 if os.path.isfile('ip.txt'):
